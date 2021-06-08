@@ -1,0 +1,29 @@
+FROM node:14.16.0
+
+# 서버 디렉터리 생성
+WORKDIR /usr/src/app
+
+# 앱 의존성 설치
+# 가능한 경우(npm@5+) package.json과 package-lock.json을 모두 복사하기 위해
+# 와일드카드를 사용
+COPY package*.json ./
+RUN npm ci --only=production
+
+# 클라이언트 폴더 생성 및 동일 작업 실행
+RUN mkdir client
+COPY client/package*json ./client/
+RUN cd client && npm ci --only=production
+
+# 서버 폴더 생성 및 동일 작업 실행
+RUN mkdir server
+COPY server/package*json ./server
+RUN cd server && npm ci --only=production
+
+# 앱 소스 추가
+COPY . .
+
+# 클라이언트 빌드
+RUN cd client && npm run build
+
+EXPOSE 80
+CMD [ "node", "server/index.js" ]
