@@ -14,7 +14,7 @@ function catchError(err, res) {
   return res.sendStatus(401).send({ message: 'Unauthorized!' })
 }
 
-async function verifyToken(req, res, next) {
+export async function verifyToken(req, res, next) {
   let token = req.headers['x-access-token']
 
   if (!token) {
@@ -32,7 +32,7 @@ async function verifyToken(req, res, next) {
   })
 }
 
-async function isAdmin(req, res, next) {
+export async function isAdmin(req, res, next) {
   const user = await User.findUnique({
     where: { id: req.userId },
     include: { roles: true },
@@ -48,7 +48,7 @@ async function isAdmin(req, res, next) {
   })
 }
 
-async function isModerator(req, res, next) {
+export async function isModerator(req, res, next) {
   const user = await User.findUnique({
     where: { id: req.userId },
     include: { roles: true },
@@ -64,7 +64,7 @@ async function isModerator(req, res, next) {
   })
 }
 
-async function isModeratorOrAdmin(req, res, next) {
+export async function isModeratorOrAdmin(req, res, next) {
   const user = await User.findUnique({
     where: { id: req.userId },
     include: { roles: true },
@@ -83,5 +83,3 @@ async function isModeratorOrAdmin(req, res, next) {
     message: 'Require Moderator or Admin Role!',
   })
 }
-
-export default { verifyToken, isAdmin, isModerator, isModeratorOrAdmin }

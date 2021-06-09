@@ -2,7 +2,7 @@ import { db, ROLES } from '../../db'
 
 const User = db.user
 
-async function checkDuplicateUsernameOrEmail(req, res, next) {
+export async function checkDuplicateUsernameOrEmail(req, res, next) {
   // Username
   let user = await User.findUnique({
     where: {
@@ -33,7 +33,7 @@ async function checkDuplicateUsernameOrEmail(req, res, next) {
   next()
 }
 
-async function checkRolesExisted(req, res, next) {
+export async function checkRolesExisted(req, res, next) {
   if (req.body.roles) {
     for (let i = 0; i < req.body.roles.length; i++) {
       if (!ROLES.includes(req.body.roles[i])) {
@@ -47,5 +47,3 @@ async function checkRolesExisted(req, res, next) {
 
   next()
 }
-
-export default { checkDuplicateUsernameOrEmail, checkRolesExisted }
