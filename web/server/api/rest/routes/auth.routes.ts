@@ -23,6 +23,6 @@ router.post(
 router.post('/signin', controller.signin)
 
 // /rest/auth/refreshtoken
-router.post('refreshtoken', controller.refreshToken)
+router.post('/refreshtoken', controller.refreshToken)
 
 export default router
