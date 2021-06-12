@@ -7,12 +7,7 @@ import { restApiRouter } from './rest'
 import cors from 'cors'
 import { db } from './db'
 
-export const app = express() as any
-
-export const server = new ApolloServer({ schema, context })
-server.applyMiddleware({ app })
-
-function applyExpressMiddleware() {
+function applyExpressMiddleware(app) {
   if (process.env.NODE_ENV === 'development') {
     app.use(cors())
   }
@@ -49,5 +44,8 @@ async function dbInit() {
   })
 }
 
-applyExpressMiddleware()
+export const app = express()
+export const server = new ApolloServer({ schema, context })
+server.applyMiddleware({ app })
+applyExpressMiddleware(app)
 dbInit()

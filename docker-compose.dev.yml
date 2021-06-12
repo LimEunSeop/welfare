@@ -15,6 +15,7 @@ services:
       - 3001:3001
     working_dir: '/usr/src/app'
     volumes:
+      - ./web/.vscode:/usr/src/app/.vscode
       - ./web/server:/usr/src/app/server
       - ./web/client/src:/usr/src/app/client/src
       - ./web/node_modules:/usr/src/app/node_modules
@@ -26,6 +27,7 @@ services:
       - DB_USER=dmstjq
       - DB_PASS=dmstjq
       - DB_NAME=dev
+      - TZ=Asia/Seoul
   # (echo >/dev/tcp/mysql/3306) &>/dev/null && echo "open" || echo "closed"
   db:
     image: postgres:13.3
@@ -35,5 +37,6 @@ services:
       - POSTGRES_USER=dmstjq
       - POSTGRES_PASSWORD=dmstjq
       - POSTGRES_DB=dev
+      - TZ=Asia/Seoul
     volumes:
       - ./db:/var/lib/postgresql/data

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "RefreshToken" ALTER COLUMN "expiryDate" SET DATA TYPE TIMESTAMPTZ(3);

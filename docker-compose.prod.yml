@@ -23,6 +23,7 @@ services:
     environment:
       - NODE_ENV=production
       - SERVER_PORT=80
+      - TZ=Asia/Seoul
   db:
     image: postgres:12.7
     expose:
@@ -32,5 +33,6 @@ services:
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASS}
       - POSTGRES_DB=${DB_NAME}
+      - TZ=Asia/Seoul
     volumes:
       - ./db:/var/lib/postgresql/data

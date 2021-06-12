@@ -2,7 +2,7 @@ import { db } from '../../db'
 import config from '../../../auth.config'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import { createToken, verifyExpiration } from '../utils'
+import { createToken, verifyExpiration } from '../utils/token'
 
 async function signup(req, res) {
   try {
@@ -37,7 +37,7 @@ async function signup(req, res) {
         },
       })
 
-      res.send({ message: 'db.user was registered successfully!' })
+      res.send({ message: 'User was registered successfully!' })
     } else {
       // user role = 1
       await db.user.update({
@@ -49,7 +49,7 @@ async function signup(req, res) {
         },
       })
 
-      res.send({ message: 'db.user was registered successfully!' })
+      res.send({ message: 'User was registered successfully!' })
     }
   } catch (err) {
     res.status(500).send({ message: err.message })
@@ -68,7 +68,7 @@ async function signin(req, res) {
     })
 
     if (!user) {
-      return res.status(404).send({ message: 'db.user Not found.' })
+      return res.status(404).send({ message: 'User Not found.' })
     }
 
     const passwordIsValid = bcrypt.compareSync(req.body.password, user.password)
@@ -98,6 +98,7 @@ async function signin(req, res) {
       roles: authorities,
       accessToken: token,
       refreshToken: refreshToken,
+      tokenExpiresIn: config.jwtExpiration,
     })
   } catch (err) {
     res.status(500).send({ message: err.message })
@@ -108,7 +109,7 @@ export async function refreshToken(req, res) {
   const { refreshToken: requestToken } = req.body
 
   if (requestToken == null) {
-    return res.status(403).json({ message: 'Refresh Token is required!' })
+    return res.status(401).json({ message: 'Refresh Token is required!' })
   }
 
   try {
@@ -121,14 +122,14 @@ export async function refreshToken(req, res) {
 
     if (!refreshToken) {
       return res
-        .status(403)
+        .status(401)
         .json({ message: 'Refresh token is not in database!' })
     }
 
     if (verifyExpiration(refreshToken)) {
       db.refreshToken.delete({ where: { userId: refreshToken.userId } })
 
-      return res.status(403).json({
+      return res.status(401).json({
         message: 'Refresh token was expired. Please make a new signin request',
       })
     }
