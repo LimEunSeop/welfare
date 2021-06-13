@@ -17,6 +17,7 @@ import { vars } from 'graphql.config'
 import { getCurrentUser } from './services/auth.service'
 import { goToLoginPage, setUserRelatedVars } from 'utils/auth'
 import axios from 'axios'
+import { Button } from 'antd'
 
 function App(props) {
   const currentUser = useReactiveVar(vars.currentUser)
@@ -79,12 +80,16 @@ function App(props) {
 
   return (
     <div>
+      <Button type="primary" onClick={() => goToLoginPage(history)}>
+        로그인
+      </Button>
+
       {refreshExpired && (
         <p>
           리프레쉬 토큰이 만료되었습니다. 다시 로그인 하시기 바랍니다.{' '}
-          <button type="button" onClick={() => goToLoginPage(history)}>
+          <Button type="primary" onClick={() => goToLoginPage(history)}>
             로그인
-          </button>
+          </Button>
         </p>
       )}
       <nav className="navbar navbar-expand navbar-dark bg-dark">
