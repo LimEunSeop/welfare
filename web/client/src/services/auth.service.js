@@ -3,18 +3,20 @@ import { setUserRelatedVars } from 'utils/auth'
 
 const API_URL = '/rest/auth/'
 
-const register = (username, email, password) => {
+const register = (email, password, name, phone, orgName) => {
   return axios.post(API_URL + 'signup', {
-    username,
     email,
     password,
+    name,
+    phone,
+    orgName,
   })
 }
 
-const login = (username, password) => {
+const login = (email, password) => {
   return axios
     .post(API_URL + 'signin', {
-      username,
+      email,
       password,
     })
     .then((response) => {

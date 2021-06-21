@@ -14,6 +14,8 @@ const client = new ApolloClient({
 export const vars = {
   currentUser: makeVar(null),
   visibility: makeVar({ user: false, moderator: false, admin: false }),
+  currentSession: makeVar(null),
+  sessionList: makeVar(null),
 }
 
 export default function GraphQLProvider({ children }) {
