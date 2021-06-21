@@ -1,2 +1,2 @@
-export * as authJwt from './authJwt'
+export * as auth from './auth'
 export * as verifySignUp from './verifySignUp'

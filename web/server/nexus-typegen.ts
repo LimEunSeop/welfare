@@ -28,14 +28,16 @@ export interface NexusGenScalars {
 }
 
 export interface NexusGenObjects {
-  Mutation: {};
-  Post: { // root type
-    body?: string | null; // String
-    id?: number | null; // Int
-    published?: boolean | null; // Boolean
-    title?: string | null; // String
+  Organization: { // root type
+    id: number; // Int!
+    name?: string | null; // String
   }
   Query: {};
+  Session: { // root type
+    description?: string | null; // String
+    id: number; // Int!
+    name?: string | null; // String
+  }
 }
 
 export interface NexusGenInterfaces {
@@ -49,47 +51,41 @@ export type NexusGenRootTypes = NexusGenObjects
 export type NexusGenAllTypes = NexusGenRootTypes & NexusGenScalars
 
 export interface NexusGenFieldTypes {
-  Mutation: { // field return type
-    createDraft: NexusGenRootTypes['Post']; // Post!
-    publish: NexusGenRootTypes['Post'] | null; // Post
-  }
-  Post: { // field return type
-    body: string | null; // String
-    id: number | null; // Int
-    published: boolean | null; // Boolean
-    title: string | null; // String
+  Organization: { // field return type
+    id: number; // Int!
+    name: string | null; // String
+    sessions: Array<NexusGenRootTypes['Session'] | null> | null; // [Session]
   }
   Query: { // field return type
-    drafts: Array<NexusGenRootTypes['Post'] | null>; // [Post]!
-    posts: Array<NexusGenRootTypes['Post'] | null> | null; // [Post]
+    organization: NexusGenRootTypes['Organization'] | null; // Organization
+  }
+  Session: { // field return type
+    description: string | null; // String
+    id: number; // Int!
+    name: string | null; // String
   }
 }
 
 export interface NexusGenFieldTypeNames {
-  Mutation: { // field return type name
-    createDraft: 'Post'
-    publish: 'Post'
-  }
-  Post: { // field return type name
-    body: 'String'
+  Organization: { // field return type name
     id: 'Int'
-    published: 'Boolean'
-    title: 'String'
+    name: 'String'
+    sessions: 'Session'
   }
   Query: { // field return type name
-    drafts: 'Post'
-    posts: 'Post'
+    organization: 'Organization'
+  }
+  Session: { // field return type name
+    description: 'String'
+    id: 'Int'
+    name: 'String'
   }
 }
 
 export interface NexusGenArgTypes {
-  Mutation: {
-    createDraft: { // args
-      body: string; // String!
-      title: string; // String!
-    }
-    publish: { // args
-      draftId: number; // Int!
+  Query: {
+    organization: { // args
+      id: number; // Int!
     }
   }
 }

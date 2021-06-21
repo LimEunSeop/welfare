@@ -11,26 +11,83 @@ generator client {
   binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
-model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  body      String
-  published Boolean
-}
-
 model User {
   id           Int           @id @default(autoincrement())
-  username     String        @unique
   email        String        @unique
   password     String
+  name         String
+  phone        String
+  regDate      DateTime      @db.Timestamptz(3) @default(now())
   roles        Role[]        @relation(name: "UserOnRole", references: [id])
   refreshToken RefreshToken?
+  userDetail     UserDetail?
+}
+
+model UserDetail {
+  id           Int @id @default(autoincrement())
+  userId       Int
+  user         User @relation(fields:[userId], references:[id])
+  bossInfo     BossInfo?
+  workerInfo   WorkerInfo?
+}
+
+model BossInfo {
+  id         Int           @id @default(autoincrement())
+  userInfo   UserDetail      @relation(fields:[userInfoId], references:[id])
+  userInfoId Int
+  orgs       Organization[]
+}
+
+model WorkerInfo {
+  id         Int                       @id @default(autoincrement())
+  userInfo   UserDetail                  @relation(fields:[userInfoId], references:[id])
+  userInfoId Int
+  session    ProgramSession  @relation(fields:[sessionId], references:[id])
+  sessionId  Int
+  role       WorkerRole                @relation(fields:[roleId], references:[id])
+  roleId     Int
 }
 
 model Role {
   id    Int    @id @default(autoincrement())
-  name  String
+  name  String @unique
   users User[] @relation(name: "UserOnRole", references: [id])
+}
+
+model WorkerRole {
+  id            Int                      @id @default(autoincrement())
+  session       ProgramSession @relation(fields: [sessionId], references:[id])
+  sessionId     Int
+  name          String
+  isManager     Boolean
+  workerInfos   WorkerInfo[]
+}
+
+model Organization {
+  id          Int        @id @default(autoincrement())
+  name        String
+  programs    ProgramSession[]
+  bossInfo    BossInfo   @relation(fields:[bossInfoId], references:[id])
+  bossInfoId  Int
+}
+
+model Program {
+  id          Int             @id @default(autoincrement())
+  name        String          @unique
+  description String
+  orgs        ProgramSession[]
+}
+
+model ProgramSession { // Organization Program N:N
+  id          Int           @id @default(autoincrement())
+  name        String?
+  org         Organization  @relation(fields:[orgId], references:[id])
+  orgId       Int
+  program     Program       @relation(fields:[programId], references:[id])
+  programId   Int
+  expiryDate  DateTime      @db.Timestamptz(3)
+  workerInfos WorkerInfo[]
+  workerRoles WorkerRole[]
 }
 
 model RefreshToken {
@@ -40,4 +97,11 @@ model RefreshToken {
   expiryDate DateTime @db.Timestamptz(3)
 
   @@index([token])
+}
+
+model Log {
+  id          Int       @id @default(autoincrement())
+  code        String
+  data        Json
+  regDate     DateTime  @db.Timestamptz(3) @default(now())
 }

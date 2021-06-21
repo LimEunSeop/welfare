@@ -15,7 +15,7 @@ router.use(function (req, res, next) {
 // /rest/auth/signup
 router.post(
   '/signup',
-  [verifySignUp.checkDuplicateUsernameOrEmail, verifySignUp.checkRolesExisted],
+  [verifySignUp.checkDuplicateEmail, verifySignUp.checkRolesExisted],
   controller.signup
 )
 

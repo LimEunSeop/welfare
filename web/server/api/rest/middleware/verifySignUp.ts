@@ -2,35 +2,28 @@ import { db, ROLES } from '../../db'
 
 const User = db.user
 
-export async function checkDuplicateUsernameOrEmail(req, res, next) {
+export async function checkDuplicateEmail(req, res, next) {
   // Username
-  let user = await User.findUnique({
-    where: {
-      username: req.body.username,
-    },
-  })
-
-  if (user) {
-    res.status(400).send({
-      message: '아이디가 중복되었습니다.',
+  try {
+    let user = await User.findUnique({
+      where: {
+        email: req.body.email,
+      },
     })
-    return
-  }
 
-  user = await User.findUnique({
-    where: {
-      email: req.body.email,
-    },
-  })
+    if (user) {
+      res.status(400).send({
+        message: '이메일이 중복되었습니다.',
+      })
+      return
+    }
 
-  if (user) {
-    res.status(400).send({
-      message: '이메일이 중복되었습니다.',
+    next()
+  } catch (e) {
+    return res.status(500).send({
+      message: e.message,
     })
-    return
   }
-
-  next()
 }
 
 export async function checkRolesExisted(req, res, next) {

@@ -1,8 +1,8 @@
 import express from 'express'
 import authRouter from './routes/auth.routes'
-import userRouter from './routes/user.routes'
+import sessionRouter from './routes/session.routes'
 
 export const restApiRouter = express.Router()
 
 restApiRouter.use('/auth', authRouter)
-restApiRouter.use('/test', userRouter)
+restApiRouter.use('/sessions', sessionRouter)

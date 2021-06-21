@@ -2,19 +2,18 @@
 ### Do not make changes to this file directly
 
 
-type Mutation {
-  createDraft(body: String!, title: String!): Post!
-  publish(draftId: Int!): Post
-}
-
-type Post {
-  body: String
-  id: Int
-  published: Boolean
-  title: String
+type Organization {
+  id: Int!
+  name: String
+  sessions: [Session]
 }
 
 type Query {
-  drafts: [Post]!
-  posts: [Post]
+  organization(id: Int!): Organization
+}
+
+type Session {
+  description: String
+  id: Int!
+  name: String
 }
