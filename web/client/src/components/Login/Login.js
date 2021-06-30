@@ -57,13 +57,7 @@ const Login = () => {
       >
         <Form.Item
           name="email"
-          rules={[
-            {
-              type: 'email',
-              message: '이메일 형식이 올바르지 않습니다.',
-            },
-            { required: true, message: '이메일을 입력해 주십시오.' },
-          ]}
+          rules={[{ required: true, message: '이메일을 입력해 주십시오.' }]}
         >
           <Input
             prefix={<UserOutlined className={cx('site-form-item-icon')} />}

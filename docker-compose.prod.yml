@@ -25,7 +25,7 @@ services:
       - SERVER_PORT=80
       - TZ=Asia/Seoul
   db:
-    image: postgres:12.7
+    image: postgres:13.3
     expose:
       - '5432'
     restart: always

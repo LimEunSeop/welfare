@@ -1,21 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react'
-import { Switch, Route, Link, useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { Switch, Route, useHistory } from 'react-router-dom'
 import './App.css'
-
-import AuthService from './services/auth.service'
 
 import ProgramIndex from './programs'
 import Login from './components/Login/Login'
 import { useReactiveVar } from '@apollo/client'
 import { vars } from 'graphql.config'
 import { getCurrentUser } from './services/auth.service'
-import { goToLoginPage, setUserRelatedVars } from 'utils/auth'
+import { setUserRelatedVars } from 'utils/auth'
 import axios from 'axios'
 import Register from 'components/Register'
 
-function App(props) {
+function App() {
   const currentUser = useReactiveVar(vars.currentUser)
-  const visibility = useReactiveVar(vars.visibility)
 
   const [refreshExpired, setRefreshExpired] = useState(false)
 
